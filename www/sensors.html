@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function checklogin()
+       { 
+     if(localStorage.getItem('username')==null ){  window.location.assign("login.html");   }		   
+	   }    
+</script>
+<meta charset="utf-8" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="msapplication-tap-highlight" content="no" />
+<!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+<link rel="icon" href="img/greywhiteM.png" sizes="16x16" />
+<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />
+<link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="css/AdminLTE.css" rel="stylesheet" type="text/css" />
+<link href="css/flot.css" rel="stylesheet" type="text/css" />
+<title>Magnum Energy Solutions | Sensors</title>
+<!-- jQuery 2.0.2 -->
+<script src="js/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="js/bootstrap.min.js" type="text/javascript"></script>
+<!-- DATA TABES SCRIPT -->
+<script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+<script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+<!-- AdminLTE App -->
+<script src="js/AdminLTE/app.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/canvasjs.min.js"></script>
+</head>
+<body class="skin-blue">
+<header class="header"> <a href="index.html" class="logo"><!-- Add the class icon to your logo image or logo icon to add the margining --> 
+  <img src="img/storevitals.png" style="width:220px" height="30px" /></a><!-- Header Navbar: style can be found in header.less -->
+  <nav class="navbar navbar-static-top" role="navigation"><!-- Sidebar toggle button--> 
+    <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button"><span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a>
+    
+   <div class="navbar-right">
+      <ul class="nav navbar-nav">
+        <!-- User Account: style can be found in dropdown.less -->
+        <li class="dropdown user user-menu"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="glyphicon glyphicon-user"></i> <span id="disp_1"><i class="caret"></i></span> </a>
+          <ul class="dropdown-menu">
+            <!-- User image -->
+            <li class="user-header bg-light-blue"> <img src="img/avatar5.png" class="img-circle" alt="User Image" />
+              <p id="disp_2"></p>
+            </li>
+            <!-- Menu Footer-->
+            <li class="user-footer">
+              <div class="pull-right"> <a href="#" onClick="signout()" class="btn btn-default btn-flat">Sign out</a> </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<div class="wrapper row-offcanvas row-offcanvas-left">
+<aside class="left-side sidebar-offcanvas"><!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar"><!-- Sidebar user panel -->
+      <div class="user-panel">
+        <div class="pull-left image"><img src="img/avatar5.png" class="img-circle" alt="User Image" /></div>
+        <div class="pull-left info">
+          <p id="disp_3">Hello,</p>
+          <a href="#"><i class="fa fa-circle text-success"></i> Online</a></div>
+      </div>
+      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <ul class="sidebar-menu">
+        <li class="active"><a href="index.html"><i class="fa fa-home"></i><span>Home</span></a></li>
+        <li class="active"><a href="dashboard.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+        <li class="active"><a href="sensors.html"><i class="fa fa-signal"></i> <span>Sensors</span></a></li>
+        <li class="active"><a href="events.html"><i class="fa fa-calendar"></i> <span>Events</span></a> </li>
+        <li class="active"><a href="notifications.html"><i class="fa fa-globe"></i> <span>Notifications</span></a></li>
+        <li class="active"><a href="analytics.html"> <i class="fa fa-bolt"></i></i><span>Analytics</span></a></li>
+        <li class="active"><a href="#" onClick="signout()" ><i class="fa fa-sign-out"></i> </i><span>Logout</span></a></li>
+      </ul>
+    </section>
+    <!-- /.sidebar --> 
+  </aside>
+
+
+  <aside class="right-side"><!-- Content Header (Page header) --><section class="content-header"><h1>Sensors</h1>
+<ol class="breadcrumb"><li><a href="index.php"><i class="fa fa-home"></i> Home</a></li><li class="active">Sensors</li></ol></section>
+<!-- Main content --><section class="content"><div class="row"><div class="col-xs-12">
+<!-- /.box-header --><div class="box">
+<div class="box-body" id="remote_sens_01">
+<p><strong>Sensor:&nbsp; </strong><span id="sens_sh_id"></span>,&nbsp;<strong>Name: &nbsp;</strong><span id="sens_sh_name"></span>,&nbsp;<strong>Location: &nbsp;</strong><span id="sens_sh_loc"></span></p>
+<iframe src="" width="100%" height="320" frameborder="0" align="center" id="grp_ifr" ></iframe>
+</div></div></div>
+<div class="row"><div class="col-xs-12"><!-- /.box --><div class="box"><div class="box-body table-responsive">
+<?php 
+$user_id = $_SESSION['user_id']; $locationstr = ""; $dataarray = ""; $annotationarray = "";
+$Query = "SELECT * from ".'setup.stp$user_map_loc'." where";  $Query .= " uml_user_id='".$user_id."'";   $result = pg_query($Query);
+while($row = pg_fetch_array($result)){ $locationstr.= $row['uml_location_id'].",";  }  $locationstr = substr($locationstr,0,strlen($locationstr)-1);
+
+
+
+$tbl_name = 'master.mtr$sensor_info';  
+$list = pg_query("select * from ".$tbl_name." where loc_id IN (".$locationstr.")");
+
+?>     
+<table id="example2" class="table table-bordered table-hover">
+<thead><tr><th>Sensor</th><th>Name</th><th>Location</th><th>Department</th><th>Floor Plan Id</th><th>Circuit</th>
+<th>Current Reading</th><th>Status</th> </tr></thead><tbody> 
+<?php $wow_num = 0; $sens ='';
+while($item=pg_fetch_array($list)){  $wow_num = 1 +$wow_num;
+if($wow_num==1){ $sens = $item['sensor_id']; $sens_type = $item['sensor_type'];  $sens_sh_name = $item['sensor_name']; $sens_sh_loc = $item['location_name'];   } ?>
+<tr id="<?=$wow_num?>">
+<td><span style="cursor:pointer;" onClick="ajaxcallsensgrp(<?=$item['sensor_id']?>,<?=$item['sensor_type']?>,'<?=$item['sensor_name']?>','<?=$item['location_name']?>','<?=$wow_num?>');" > <?=$item['sensor_id']?> </span></td>
+<td><span style="cursor:pointer;" onClick="ajaxcallsensgrp(<?=$item['sensor_id']?>,<?=$item['sensor_type']?>,'<?=$item['sensor_name']?>','<?=$item['location_name']?>','<?=$wow_num?>');" ><?=$item['sensor_name']?></span></td>
+<td><span style="cursor:pointer;" onClick="ajaxcallsensgrp(<?=$item['sensor_id']?>,<?=$item['sensor_type']?>,'<?=$item['sensor_name']?>','<?=$item['location_name']?>','<?=$wow_num?>');" ><?=$item['location_name']?></span></td>
+<td><span style="cursor:pointer;" onClick="ajaxcallsensgrp(<?=$item['sensor_id']?>,<?=$item['sensor_type']?>,'<?=$item['sensor_name']?>','<?=$item['location_name']?>','<?=$wow_num?>');" ><?=$item['department_name']?></span></td>
+<td><span style="cursor:pointer;" onClick="ajaxcallsensgrp(<?=$item['sensor_id']?>,<?=$item['sensor_type']?>,'<?=$item['sensor_name']?>','<?=$item['location_name']?>','<?=$wow_num?>');" ><?=$item['floor_name']?></span></td>
+<td><span style="cursor:pointer;" onClick="ajaxcallsensgrp(<?=$item['sensor_id']?>,<?=$item['sensor_type']?>,'<?=$item['sensor_name']?>','<?=$item['location_name']?>','<?=$wow_num?>');" ><?=$item['circuit_name']?></span></td>
+<td><p class="text-aqua" style="cursor:pointer;" onClick="ajaxcallsensgrp(<?=$item['sensor_id']?>,<?=$item['sensor_type']?>,'<?=$item['sensor_name']?>','<?=$item['location_name']?>','<?=$wow_num?>');"><b><?=$item['curr_temp_unit']?></b></p></td>
+<td><?=$item['sensor_status']?></td></tr><?php } ?></tbody></table>
+<form action="" method="post" name="sensors_graph_id" id="sensors_graph_id"><input type="hidden" name="sensor_id_grp" id="sensor_id_grp"/> 
+<input type="hidden" name="sensor_id_type" id="sensor_id_type"/></form>          
+</div><!-- /.box-body --></div><!-- /.box --></div></div></section><!-- /.content --></aside>
+</div>
+<script>
+//display username in three locations in page
+document.getElementById('disp_1').innerHTML = localStorage.getItem('username');
+document.getElementById('disp_2').innerHTML = localStorage.getItem('username');
+document.getElementById('disp_3').innerHTML = 'Hello,'+localStorage.getItem('username');
+
+//function for signout//--------
+function signout()
+         {
+			localStorage.removeItem("username");	 
+			localStorage.removeItem("userid");	 
+			localStorage.removeItem("sloc_id");	
+			window.location.assign("login.html");  
+
+		 }  
+</script>
+
+</body>
+</html>

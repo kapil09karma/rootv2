@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html class="bg-black">
+    <head>
+<script>
+//alert(localStorage.getItem('username'));
+if(localStorage.getItem('username')!= null ){  window.location.assign("index.html");   }
+</script>    
+
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>Magnum Energy Solutions | Login</title>
+        <link rel="icon" href="img/greywhiteM.png" sizes="16x16" />
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+        <link href="css/font-awesome.css" rel="stylesheet" type="text/css">
+        <link href="css/AdminLTE.css" rel="stylesheet" type="text/css">
+    </head>
+  <body class="bg-black">
+  <div class="form-box" id="login-box">
+  <div class="header"><img src="img/greywhite.png" style="width:200px; height:50px;"></div>
+  <form action="" method="post" name="loginform" id="loginform">
+    <div class="body bg-gray">
+      <div class="form-group">
+        <input name="username" id="user_name" class="form-control" placeholder="User ID" type="text" required>
+      </div>
+      <div class="form-group">
+        <input name="password" id="user_pwd" class="form-control" placeholder="Password" type="password" required>
+      </div>
+      
+ 
+    <div class="alert alert-danger alert-dismissable" id="not_match_error" style="display:none;">
+    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+    Username and password does not match </div>
+
+    <div class="alert alert-danger alert-dismissable" id="not_enter_info" style="display:none;">
+    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+    Please enter username and password</div>
+
+        
+       
+    </div>
+    
+    <div class="footer">
+  <input type="submit" name="submit" id="applogin" class="btn bg-olive btn-block" value="Login"/>      
+    </div>
+  </form>
+</div>
+        
+        
+		<script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script src="js/jquery.js"></script> 
+        <script src="js/bootstrap.min.js"></script> 
+        <script type="text/javascript">
+           // app.initialize();
+			
+		/*function login_hussman()
+		         {
+					 
+					 
+					alert('hello tthanks '); 
+					localStorage.setItem("key1", "kpail karma");
+					var value = localStorage.getItem('key1');
+					alert(value);
+				 
+				 
+				 }    	
+				 */
+				 
+				$(function() {
+				$('#applogin').click(function(e){
+			    
+				 var un =  $('#username').val();    	
+				 var pas =  $('#user_pwd').val();
+				 
+				if(un!='' && pas!=''){ 
+				
+				
+				e.preventDefault();
+				$.ajax({
+				url: 'http://204.14.40.108:8888/userauth',
+				type: 'post',
+				dataType: 'json',
+				data: $('form#loginform').serialize(),
+				success: function(data) {
+					
+					if(data[0].status=='Y'){  
+					
+					localStorage.setItem("userid", data[0].user_id);
+					localStorage.setItem("username", data[0].user_name);
+					localStorage.setItem("sloc_id", data[0].sloc_id);
+					
+					window.location.assign("index.html");
+					
+					
+					}
+					if(data[0].status=='N'){  
+					$("#not_match_error").css("display","block"); 
+					window.setTimeout(function () { $("#not_match_error").css('display','none'); }, 3000);					
+					}
+					
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+				alert(xhr.responseText); // <- same here, your own div, p, span, whatever you wish to use
+				}
+				});
+				}else{ 
+				$("#not_enter_info").css("display","block"); 
+				window.setTimeout(function () { $("#not_enter_info").css('display','none'); }, 3000);					
+				 }
+				
+				
+				return false;
+				
+				
+				});
+				});				 
+			
+			
+        </script>
+    </body>
+</html>
