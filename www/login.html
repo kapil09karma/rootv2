@@ -75,19 +75,6 @@ if(localStorage.getItem('username')!= null ){  window.location.assign("index.htm
         <script src="js/bootstrap.min.js"></script> 
         <script type="text/javascript">
            // app.initialize();
-			
-		/*function login_hussman()
-		         {
-					 
-					 
-					alert('hello tthanks '); 
-					localStorage.setItem("key1", "kpail karma");
-					var value = localStorage.getItem('key1');
-					alert(value);
-				 
-				 
-				 }    	
-				 */
 				 
 				$(function() {
 				$('#applogin').click(function(e){
@@ -106,14 +93,15 @@ if(localStorage.getItem('username')!= null ){  window.location.assign("index.htm
 				data: $('form#loginform').serialize(),
 				success: function(data) {
 					
-					if(data[0].status=='Y'){  
+					if(data[0].status=='Y'){   
 					
-					localStorage.setItem("userid", data[0].user_id);
-					localStorage.setItem("username", data[0].user_name);
-					localStorage.setItem("sloc_id", data[0].sloc_id);
+						localStorage.setItem("userid", data[0].user_id);
+						localStorage.setItem("username", data[0].user_name);
+						localStorage.setItem("sloc_id", data[0].sloc_id);
+						localStorage.setItem("org_id", data[0].org_id);
 					
-					window.location.assign("index.html");
 					
+					   window.location.assign("index.html");
 					
 					}
 					if(data[0].status=='N'){  

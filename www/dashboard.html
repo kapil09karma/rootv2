@@ -22,16 +22,12 @@ function checklogin()
 <link href="css/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css" />
 <link href="css/daterangepicker/daterangepicker-bs3.css" rel="stylesheet" type="text/css" />
 <!-- bootstrap wysihtml5 - text editor -->
-<!--<link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
---><!-- Theme style -->
+<link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
+<!-- Theme style -->
 <link href="css/AdminLTE.css" rel="stylesheet" type="text/css" />
 
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-<![endif]-->
+
+
 <title>Magnum Energy Solutions | Dashboard</title>
 </head>
 <body class="skin-blue" onLoad="checklogin()">
@@ -154,6 +150,7 @@ function checklogin()
                   </div>
                   <!-- ./col --></div>
               </div>
+              
               <div class="col-md-6"><!-- general form elements -->
                 <div class="box box-danger">
                   <div class="box-header">
@@ -200,67 +197,23 @@ function checklogin()
                   </div>
                   <!-- /.box-body --></div>
               </div>
-              <?php $user_id = $_SESSION['user_id']; $locationstr = ""; $dataarray = ""; $annotationarray = "";
-$Query = "SELECT * from ".'setup.stp$user_map_loc'." where";  $Query .= " uml_user_id='".$user_id."'";   $result = pg_query($Query);
-while($row = pg_fetch_array($result)){ $locationstr.= $row['uml_location_id'].",";  }  $locationstr = substr($locationstr,0,strlen($locationstr)-1);
-$Query1 = "SELECT * from ".'master.mtr$loc_wise_evnt_count_vw'." where"; $Query1 .= " loc_id IN (".$locationstr.")"; $result1 = pg_query($Query1); $locationname = "";
-?>
+              
               <div class="col-md-6">
                 <div class="box box-danger" id="loading-example">
                   <div class="box-header"><!-- tools box -->
                     <h3 class="box-title">Unacknowleged Event Details</h3>
                   </div>
-                  <div class="box-body table-responsive pad"><!-- chat item -->
-                    <table class="table table-bordered text-center">
-                      <tbody>
-                        <?php while($row1 = pg_fetch_array($result1)){ $tot =  $row1['event_type_1'] + $row1['event_type_2'] + $row1['event_type_3'] + $row1['event_type_7']; ?>
-                        <tr>
-                          <td><?=$row1['location_name']?></td>
-                          <td><div class="row">
-                              <div class="col-xs-2 text-center" style="border-right: 1px solid #f4f4f4">
-                                <input type="text" class="knob" data-readonly="true" data-max="<?=$tot?>" value="<?=$row1['event_type_1']?>" data-width="50" data-height="50" data-fgColor="#85ccd2"/>
-                                <div class="knob-label"><b>Out of range</b></div>
-                              </div>
-                              <!-- ./col --></div></td>
-                          <td><div class="row">
-                              <div class="col-xs-2 text-center" style="border-right: 1px solid #f4f4f4">
-                                <input type="text" class="knob" data-readonly="true" data-max="<?=$tot?>" value="<?=$row1['event_type_2']?>" data-width="50" data-height="50" data-fgColor="#e95a38"/>
-                                <div class="knob-label"><b>Not working</b></div>
-                              </div>
-                              <!-- ./col --></div></td>
-                          <td><div class="row">
-                              <div class="col-xs-2 text-center" style="border-right: 1px solid #f4f4f4">
-                                <input type="text" class="knob" data-readonly="true" data-max="<?=$tot?>" value="<?=$row1['event_type_3']?>" data-width="50" data-height="50" data-fgColor="#fad55c"/>
-                                <div class="knob-label"><b>Flapping</b></div>
-                              </div>
-                              <!-- ./col --></div></td>
-                          <td><div class="row">
-                              <div class="col-xs-2 text-center" style="border-right: 1px solid #f4f4f4">
-                                <input type="text" class="knob" data-readonly="true" data-max="<?=$tot?>" value="<?=$row1['event_type_7']?>" data-width="50" data-height="50" data-fgColor="#465cdf"/>
-                                <div class="knob-label"><b>Open door</b></div>
-                              </div>
-                              <!-- ./col --></div></td>
-                          <td><b><?php echo $tot; ?></b></td>
-                        </tr>
-                        <?php } ?>
-                      </tbody>
-                    </table>
+                  <div class="box-body table-responsive pad" id="ued_data" ><!-- chat item -->
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="tab-pane" id="tab_2">
-            <?php  $Query1_mtr = "SELECT * from ".'master.mtr$meter'." where"; $Query1_mtr .= " meter_loc_id IN (".$locationstr.")"; $result_2 = pg_query($Query1_mtr); ?>
-            <select name="meter_sel" id="meter_sel" onChange="meter_change(this.value);"  >
-              <?php $mr_no = 0; while($itm_1 =  pg_fetch_array($result_2)){   $mr_no = $mr_no +1;  if($mr_no==1){ $ok = $itm_1['meter_url']; } ?>
-              <option value="<?=$itm_1['meter_url']?>">
-              <?=$itm_1['meter_name']?>
-              </option>
-              <?php } ?>
-            </select>
+        <select name="meter_sel" id="meter_sel" onChange="meter_change(this.value);"  >
+        </select>
             <div class="row"><br/>
-              <iframe src="<?=$ok?>" frameborder="0" id="meterlocation_space" height="100%" width="100%" style="min-height:500px" ></iframe>
+              <iframe src="" frameborder="0" id="meterlocation_space" height="100%" width="100%" style="min-height:500px" ></iframe>
             </div>
           </div>
         </div>
@@ -300,8 +253,8 @@ function signout()
 		 }  
 
 
-
-$.getJSON( "http://204.14.40.108:8888/real_time?userid="+localStorage.getItem('userid'), {} )
+//code for Realtime Snapshot section
+$.getJSON( "http://204.14.40.108:8888/real_time?userid="+localStorage.getItem('userid')+"&slocid="+localStorage.getItem('sloc_id')+"&orgid="+localStorage.getItem('org_id'), {} )
 .done(function( json ) {
 	document.getElementById("issue_out_of_range_data").innerHTML = json[0].out_range_count;
 	document.getElementById("issueopendoordata").innerHTML = json[0].open_door_count;
@@ -309,7 +262,83 @@ $.getJSON( "http://204.14.40.108:8888/real_time?userid="+localStorage.getItem('u
 	document.getElementById("issuenot_working").innerHTML = json[0].not_working_count;
 	document.getElementById("issue_flapping").innerHTML = json[0].sen_flapping_count;
 })
+
+//code for Unacknowledged Snapshot View
+$.getJSON( "http://204.14.40.108:8888/unacknowledge?userid="+localStorage.getItem('userid')+"&slocid="+localStorage.getItem('sloc_id')+"&orgid="+localStorage.getItem('org_id'), {} )
+.done(function( json ) {
+	document.getElementById("event_up_1").innerHTML =json[0].event_count; var newval_1 = (json[0].event_count/json[0].event_count)*100;
+	document.getElementById("progress_1").style.width = newval_1+"%";
+	document.getElementById("out_of_range_up_2").innerHTML = json[0].out_range_count; var newval_2 = (json[0].out_range_count/json[0].event_count)*100;
+	document.getElementById("out_of_range_style").style.width = newval_2+"%"; 
+	document.getElementById("open_door_up_2").innerHTML = json[0].door_open_count;   var newval_3 = (json[0].door_open_count/json[0].event_count)*100; 
+	document.getElementById("open_door_up_style_2").style.width = newval_3+"%"; 
+    document.getElementById("notifications_up_1").innerHTML = json[0].notify_count; document.getElementById("notifications_up_1_style").style.width = json[0].notify_count+"%";
+	document.getElementById("not_working_up_2").innerHTML = json[0].not_working_count; var newval_4 = (json[0].not_working_count/json[0].event_count)*100;  
+	document.getElementById("not_working_up_style").style.width = newval_4+"%";
+	document.getElementById("flapping_up_2").innerHTML = json[0].sen_flapping_count; var newval_5 =  (json[0].sen_flapping_count/json[0].event_count)*100;  
+	document.getElementById("flapping_up_style").style.width = newval_5+"%"; 
+})
+
+
+//code Unacknowledged Event Locations
+$.getJSON( "http://204.14.40.108:8888/unacknowledge_loc?userid="+localStorage.getItem('userid')+"&slocid="+localStorage.getItem('sloc_id')+"&orgid="+localStorage.getItem('org_id'), {} )
+.done(function( json ) {
+
+//BAR CHART
+var bar = new Morris.Bar({ element: 'bar-chart', resize: true, data: json, barColors: ['#85ccd2', '#e95a38' ,'#fad55c','#465cdf'],
+xkey: 'y', ykeys: ['a', 'b','c','d'], labels: ['Out of range','Not working','Flapping','Open door'], hideHover: 'auto'}); 
+
+
+})
+
+//code Unacknowleged Event Details
+$.getJSON( "http://204.14.40.108:8888/unacknowledge_loc?userid="+localStorage.getItem('userid')+"&slocid="+localStorage.getItem('sloc_id')+"&orgid="+localStorage.getItem('org_id'), {} )
+.done(function( json ) {
+         
+        var html_mirror = '<table class="table table-bordered text-center"><tbody>';
+		    
+		for(var i=0; i<json.length; i++){
+		
+		 var tot = parseInt(json[i].a) + parseInt(json[i].b) +parseInt(json[i].c) + parseInt(json[i].d); 
+		 html_mirror+='<tr><td>'+json[i].y+'</td><td>';
 		 
+		  html_mirror+='<div class="row"><div class="col-xs-2 text-center" style="border-right: 1px solid #f4f4f4">'+
+'<input type="text" class="knob" data-readonly="true" data-max="'+tot+'" value="'+json[i].a+'" data-width="50" data-height="50" data-fgColor="#85ccd2"/>'+
+'<div class="knob-label"><b>Out of range</b></div></div></div></td><td><div class="row"><div class="col-xs-2 text-center" style="border-right: 1px solid #f4f4f4">'+
+'<input type="text" class="knob" data-readonly="true" data-max="'+tot+'" value="'+json[i].b+'" data-width="50" data-height="50" data-fgColor="#e95a38"/>'+
+'<div class="knob-label"><b>Not working</b></div></div></div></td><td><div class="row"><div class="col-xs-2 text-center" style="border-right: 1px solid #f4f4f4">'+
+'<input type="text" class="knob" data-readonly="true" data-max="'+tot+'" value="'+json[i].c+'" data-width="50" data-height="50" data-fgColor="#fad55c"/>'+
+'<div class="knob-label"><b>Flapping</b></div></div></div></td><td><div class="row"><div class="col-xs-2 text-center" style="border-right: 1px solid #f4f4f4">'+
+'<input type="text" class="knob" data-readonly="true" data-max="'+tot+'" value="'+json[i].d+'" data-width="50" data-height="50" data-fgColor="#465cdf"/>'+
+'<div class="knob-label"><b>Open door</b></div></div></div></td><td><b>'+tot+'</b></td></tr>';
+		}
+		
+			html_mirror+='</tbody></table>';
+			document.getElementById("ued_data").innerHTML = html_mirror;
+			$(".knob").knob();  
+})
+
+
+
+
+//code meter section
+$.getJSON( "http://204.14.40.108:8888/meter?userid="+localStorage.getItem('userid')+"&slocid="+localStorage.getItem('sloc_id')+"&orgid="+localStorage.getItem('org_id'), {} )
+.done(function( json ) {
+
+		var html_mirror2 = '';
+		for(var i=0; i<json.length; i++){
+		    html_mirror2+='<option value="'+json[i].meter_url+'">'+json[i].meter_name+'</option>';
+		  
+		  if(i==0){
+			$("#meterlocation_space").attr("src",json[i].meter_url);
+		  }
+		}
+		 document.getElementById("meter_sel").innerHTML = html_mirror2;
+})
+
+
+
+function meter_change(meter_url) { $("#meterlocation_space").attr("src",meter_url); }
 </script>
 
 </body>
